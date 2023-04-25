@@ -1,25 +1,12 @@
-[{
-		"username":	"kivvi",
-		"password":	"000000",
-		"token":	"000000kivvi"
-	}, {
-		"username":	"admin",
-		"password":	"123456",
-		"token":	"123456admin"
-	}, {
-		"username":	"new_admin",
-		"password":	"3412",
-		"token":	"3412new_admin"
-	}, {
-		"username":	"test",
-		"password":	"test",
-		"token":	"testtest"
-	}, {
-		"username":	"password",
-		"password":	"password",
-		"token":	"passwordpassword"
-	}, {
-		"username":	"helloworld",
-		"password":	"helloworld",
-		"token":	"helloworldhelloworld"
-	}]
+[
+    {
+        "username": "kivvi",
+        "password": "3412",
+        "token": "1dd238686efdc47802af65404cc75c9b"
+    },
+    {
+        "username": "admin",
+        "password": "3412",
+        "token": "74400aa36f54ce98b8ac28d7dec29106"
+    }
+]

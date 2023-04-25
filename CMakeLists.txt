@@ -34,8 +34,8 @@ link_cjson_library(client)
 link_cjson_library(test)
 
 # 自动查找openssl
-#find_package(OpenSSL REQUIRED)
-#include_directories(${OPENSSL_INCLUDE_DIR})
-#target_link_libraries(server ${OPENSSL_LIBRARIES})
-#target_link_libraries(client ${OPENSSL_LIBRARIES})
-#target_link_libraries(test ${OPENSSL_LIBRARIES})
+find_package(OpenSSL REQUIRED)
+include_directories(${OPENSSL_INCLUDE_DIR})
+target_link_libraries(server ${OPENSSL_LIBRARIES})
+target_link_libraries(client ${OPENSSL_LIBRARIES})
+target_link_libraries(test ${OPENSSL_LIBRARIES})

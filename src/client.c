@@ -1,6 +1,5 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <sys/mman.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -12,12 +11,11 @@
 
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 8888
-#define BUFFER_SIZE 4096
 
 int socket_fd;
 
 void recv_message() {
-    char buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE_CLIENT];
     while (1) {
         memset(buffer, 0, sizeof(buffer));
         ssize_t n = recv(socket_fd, buffer, sizeof(buffer), 0);
@@ -25,54 +23,16 @@ void recv_message() {
             printf("Server closed.\n");
             break;
         }
-//        printf("Recv: %s\n", buffer);
+        //  printf("Recv: %s\n", buffer);
         client_response(buffer);
     }
 }
 
-//void send_message() {
-//    char buffer[BUFFER_SIZE];
-//    printf("Enter a command: ");
-//
-//    while (fgets(buffer, BUFFER_SIZE, stdin)) {
-//        buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
-//
-//        char *json_string = (char *) malloc(sizeof(char) * BUFFER_SIZE);
-//
-//        if (strcmp(buffer, "/exit") == 0) { // Exit
-//            printf("Exiting...\n");
-//            break;
-//        } else if (strcmp(buffer, "/login") == 0) {
-//            // Login, input username and password, then send to the server
-//            char *username = "kivvi";
-//            char *password = "000000";
-//            json_string = login_user(username, password);
-//        } else if (strcmp(buffer, "/register") == 0) {
-//            // Register, input username and password, then send to the server
-//            char *username = "kivvi";
-//            char *password = "000000";
-//            json_string = register_user(username, password);
-//        } else if (strcmp(buffer, "/history") == 0) {   // History
-//            json_string = get_history(token);
-//            printf("%s\n", json_string);
-//        } else if (strncmp(buffer, "/send ", 6) == 0) {
-//            char *message = buffer + 6;
-//            json_string = send_message_client(token, message);
-//        } else {
-//            printf("Invalid command. Please try again.\n");
-//            continue;
-//        }
-//
-//        send(socket_fd, json_string, strlen(json_string), 0);
-//        free(json_string);
-//    }
-//}
-
 void send_message() {
-    char buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE_CLIENT];
     printf("Enter a command: ");
 
-    while (fgets(buffer, BUFFER_SIZE, stdin)) {
+    while (fgets(buffer, BUFFER_SIZE_CLIENT, stdin)) {
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
 
         char *json_string;
@@ -82,29 +42,29 @@ void send_message() {
             break;
         } else if (strcmp(buffer, "/login") == 0) {
             // Login, input username and password, then send to the server
-            char username[BUFFER_SIZE];
-            char password[BUFFER_SIZE];
+            char username[BUFFER_SIZE_CLIENT];
+            char password[BUFFER_SIZE_CLIENT];
 
             printf("Enter your username: ");
-            fgets(username, BUFFER_SIZE, stdin);
+            fgets(username, BUFFER_SIZE_CLIENT, stdin);
             username[strcspn(username, "\n")] = '\0';
 
             printf("Enter your password: ");
-            fgets(password, BUFFER_SIZE, stdin);
+            fgets(password, BUFFER_SIZE_CLIENT, stdin);
             password[strcspn(password, "\n")] = '\0';
 
             json_string = login_user(username, password);
         } else if (strcmp(buffer, "/register") == 0) {
             // Register, input username and password, then send to the server
-            char username[BUFFER_SIZE];
-            char password[BUFFER_SIZE];
+            char username[BUFFER_SIZE_CLIENT];
+            char password[BUFFER_SIZE_CLIENT];
 
             printf("Enter your username: ");
-            fgets(username, BUFFER_SIZE, stdin);
+            fgets(username, BUFFER_SIZE_CLIENT, stdin);
             username[strcspn(username, "\n")] = '\0';
 
             printf("Enter your password: ");
-            fgets(password, BUFFER_SIZE, stdin);
+            fgets(password, BUFFER_SIZE_CLIENT, stdin);
             password[strcspn(password, "\n")] = '\0';
 
             json_string = register_user(username, password);

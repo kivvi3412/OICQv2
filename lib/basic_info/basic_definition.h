@@ -10,7 +10,7 @@
 
 #define PORT 8888
 #define MAX_CLIENTS 1000
-#define BUFFER_SIZE 4096      // 缓冲区大小
+#define BUFFER_SIZE_CLIENT 4096      // 缓冲区大小
 struct client_info *clients[MAX_CLIENTS];    // 连接的客户端
 int client_count = 0;    //连接客户端的数量
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;  // pthread锁, 可以不用init或者destroy进行初始化和销毁

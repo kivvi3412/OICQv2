@@ -11,7 +11,7 @@
 // 处理客户端请求的线程函数
 void *handle_client(void *arg) {
     struct client_info *client = (struct client_info *) arg;
-    char buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE_CLIENT];
     ssize_t len;
 
     printf("Client connected: %s:%d\n",
@@ -19,7 +19,7 @@ void *handle_client(void *arg) {
 
     // If the recv function returns 0, it means that the client has disconnected.
     // If the recv function returns a negative number, it means that an error has occurred.
-    while ((len = recv(client->socket_fd, buffer, BUFFER_SIZE, 0)) > 0) {   // 单个用户发消息广播函数
+    while ((len = recv(client->socket_fd, buffer, BUFFER_SIZE_CLIENT, 0)) > 0) {   // 单个用户发消息广播函数
         buffer[len] = '\0';
         printf("Received message from client: %s\n", buffer);
         // 处理客户端请求
