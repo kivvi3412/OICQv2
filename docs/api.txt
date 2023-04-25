@@ -1,0 +1,84 @@
+#注册
+客户端发送:
+{
+    "cmd": "register",
+    "parm1": "admin",
+    "parm2": "123456"
+}
+
+服务端发送
+{
+    "info": "register",
+    "msg": "token"
+}
+
+#登录
+{
+    "cmd": "login",
+    "parm1": "admin",
+    "parm2": "123456"
+}
+服务端发送:
+{
+    "info": "login",
+    "msg": "token"
+}
+
+------------------------------------------------
+
+#历史记录
+客户端:
+{
+    "cmd": "get_history",
+    "parm1": "token",
+    "parm2": "10",  // 10条历史记录, 一般不用
+}
+
+服务端:
+{
+    "info": "history",
+    "msg": [
+               {
+                   "username": "kivvi",
+                   "message": "HelloWorld!Message!"
+               },
+               {
+                   "username": "admin",
+                   "message": "YEAH!IGET!!!!!!!!!!!Message!"
+               },
+               {
+                   "username": "admin",
+                   "message": "hello world哈哈哈😂"
+               },
+               {
+                   "username": "kivvi",
+                   "message": "你好世界你好世界😂"
+               },
+               {
+                   "username": "admin",
+                   "message": "好的，💬测试结束"
+               }
+           ]
+}
+#消息发送
+客户端:
+{
+    "cmd": "send_message",
+    "parm1": "token",
+    "parm2": "The message user sent"
+}
+
+服务端:
+{
+    "info": "send_message_status",
+    "msg": "success"
+}
+
+// 群发消息发给个人
+{
+    "info": "group_message",
+    "msg": {
+        "username": "admin",
+        "message": "hello world哈哈哈😂"
+    }
+}

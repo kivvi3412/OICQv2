@@ -1,0 +1,25 @@
+[{
+		"username":	"kivvi",
+		"message":	"HelloWorld!Message!"
+	}, {
+		"username":	"admin",
+		"message":	"YEAH!IGET!!!!!!!!!!!Message!"
+	}, {
+		"username":	"admin",
+		"message":	"hello world哈哈哈😂"
+	}, {
+		"username":	"kivvi",
+		"message":	"你好世界你好世界😂"
+	}, {
+		"username":	"admin",
+		"message":	"好的，💬测试结束"
+	}, {
+		"username":	"kivvi",
+		"message":	"Hello, world!"
+	}, {
+		"username":	"test",
+		"message":	"hello world哈哈哈😂"
+	}, {
+		"username":	"kivvi",
+		"message":	"HelloWorld form admin"
+	}]
