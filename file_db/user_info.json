@@ -6,4 +6,20 @@
 		"username":	"admin",
 		"password":	"123456",
 		"token":	"123456admin"
+	}, {
+		"username":	"new_admin",
+		"password":	"3412",
+		"token":	"3412new_admin"
+	}, {
+		"username":	"test",
+		"password":	"test",
+		"token":	"testtest"
+	}, {
+		"username":	"password",
+		"password":	"password",
+		"token":	"passwordpassword"
+	}, {
+		"username":	"helloworld",
+		"password":	"helloworld",
+		"token":	"helloworldhelloworld"
 	}]

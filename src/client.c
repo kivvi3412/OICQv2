@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include "socket_client/auto_client_transfer.h"
+#include "socket_client/client_socket_sender.h"
 
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 8888
@@ -18,15 +19,54 @@ int socket_fd;
 void recv_message() {
     char buffer[BUFFER_SIZE];
     while (1) {
+        memset(buffer, 0, sizeof(buffer));
         ssize_t n = recv(socket_fd, buffer, sizeof(buffer), 0);
         if (n <= 0) {
             printf("Server closed.\n");
             break;
         }
-        printf("Recv: %s\n", buffer);
+//        printf("Recv: %s\n", buffer);
         client_response(buffer);
     }
 }
+
+//void send_message() {
+//    char buffer[BUFFER_SIZE];
+//    printf("Enter a command: ");
+//
+//    while (fgets(buffer, BUFFER_SIZE, stdin)) {
+//        buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
+//
+//        char *json_string = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+//
+//        if (strcmp(buffer, "/exit") == 0) { // Exit
+//            printf("Exiting...\n");
+//            break;
+//        } else if (strcmp(buffer, "/login") == 0) {
+//            // Login, input username and password, then send to the server
+//            char *username = "kivvi";
+//            char *password = "000000";
+//            json_string = login_user(username, password);
+//        } else if (strcmp(buffer, "/register") == 0) {
+//            // Register, input username and password, then send to the server
+//            char *username = "kivvi";
+//            char *password = "000000";
+//            json_string = register_user(username, password);
+//        } else if (strcmp(buffer, "/history") == 0) {   // History
+//            json_string = get_history(token);
+//            printf("%s\n", json_string);
+//        } else if (strncmp(buffer, "/send ", 6) == 0) {
+//            char *message = buffer + 6;
+//            json_string = send_message_client(token, message);
+//        } else {
+//            printf("Invalid command. Please try again.\n");
+//            continue;
+//        }
+//
+//        send(socket_fd, json_string, strlen(json_string), 0);
+//        free(json_string);
+//    }
+//}
 
 void send_message() {
     char buffer[BUFFER_SIZE];
@@ -35,41 +75,55 @@ void send_message() {
     while (fgets(buffer, BUFFER_SIZE, stdin)) {
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
 
-        cJSON *json = cJSON_CreateObject();
+        char *json_string;
 
         if (strcmp(buffer, "/exit") == 0) { // Exit
             printf("Exiting...\n");
             break;
         } else if (strcmp(buffer, "/login") == 0) {
             // Login, input username and password, then send to the server
-            cJSON_AddStringToObject(json, "cmd", "login");
-            cJSON_AddStringToObject(json, "parm1", "kivvi");
-            cJSON_AddStringToObject(json, "parm2", "000000");
+            char username[BUFFER_SIZE];
+            char password[BUFFER_SIZE];
+
+            printf("Enter your username: ");
+            fgets(username, BUFFER_SIZE, stdin);
+            username[strcspn(username, "\n")] = '\0';
+
+            printf("Enter your password: ");
+            fgets(password, BUFFER_SIZE, stdin);
+            password[strcspn(password, "\n")] = '\0';
+
+            json_string = login_user(username, password);
         } else if (strcmp(buffer, "/register") == 0) {
             // Register, input username and password, then send to the server
-            cJSON_AddStringToObject(json, "cmd", "register");
-            cJSON_AddStringToObject(json, "parm1", "admin");
-            cJSON_AddStringToObject(json, "parm2", "123456");
+            char username[BUFFER_SIZE];
+            char password[BUFFER_SIZE];
+
+            printf("Enter your username: ");
+            fgets(username, BUFFER_SIZE, stdin);
+            username[strcspn(username, "\n")] = '\0';
+
+            printf("Enter your password: ");
+            fgets(password, BUFFER_SIZE, stdin);
+            password[strcspn(password, "\n")] = '\0';
+
+            json_string = register_user(username, password);
         } else if (strcmp(buffer, "/history") == 0) {   // History
-            cJSON_AddStringToObject(json, "cmd", "get_history");
-            cJSON_AddStringToObject(json, "parm1", token);
-            cJSON_AddStringToObject(json, "parm2", "10");
+            json_string = get_history(token);
+            printf("%s\n", json_string);
         } else if (strncmp(buffer, "/send ", 6) == 0) {
-            cJSON_AddStringToObject(json, "cmd", "send_message");
-            cJSON_AddStringToObject(json, "parm1", token);
-            cJSON_AddStringToObject(json, "parm2", "HelloWorld form admin");
+            char *message = buffer + 6;
+            json_string = send_message_client(token, message);
         } else {
             printf("Invalid command. Please try again.\n");
             continue;
         }
 
-        char *json_string = cJSON_PrintUnformatted(json);
-        printf("Send: %s\n", json_string);
         send(socket_fd, json_string, strlen(json_string), 0);
-        cJSON_Delete(json);
         free(json_string);
     }
 }
+
 
 void client() {
     struct sockaddr_in server_address;
@@ -104,8 +158,4 @@ void client() {
 int main(void) {
     init_shared_memory();
     client();
-//    SimpleMessageStruct *simple_message = (SimpleMessageStruct *) malloc(sizeof(SimpleMessageStruct));
-//    strcpy(simple_message->username, "admin123");
-//    strcpy(simple_message->message, "admin1234543");
-//    add_message_to_json_file(CHAT_HISTORY_PATH, simple_message);
 }
