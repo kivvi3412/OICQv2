@@ -48,14 +48,14 @@ char *register_from_json(char *json) {
     CommonJsonClient *common_json = common_json_client_from_string(json);
     UserInfoStruct *user_info = (UserInfoStruct *) malloc(sizeof(UserInfoStruct));
     CommonJsonServer *common_json_server_response = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
-    char token[100];
+    char temp_token[100];
     strcpy(user_info->username, common_json->parm1);
     strcpy(user_info->password, common_json->parm2);
-    sha256_string_with_salt(user_info->password, user_info->username, token);
-    strcpy(user_info->token, token);
+    sha256_string_with_salt(user_info->password, user_info->username, temp_token);
+    strcpy(user_info->token, temp_token);
     if (add_user_to_json_file(USER_INFO_PATH, user_info) == 0) {
         strcpy(common_json_server_response->info, "register");
-        strcpy(common_json_server_response->msg, token);
+        strcpy(common_json_server_response->msg, temp_token);
     } else {
         strcpy(common_json_server_response->info, "register");
         strcpy(common_json_server_response->msg, "failed");
@@ -97,6 +97,60 @@ char *login_from_json(char *json) {
         return common_json_server_to_string(common_json_server_response);
     }
 }
+
+/*
+ * 更新用户密码
+ * 输入json: "{\"cmd\":\"update_password\",\"parm1\":\"token\",\"parm2\":\"new_password\"}";
+ * 输出json: "{\"info\":\"update_password\",\"msg\":\"success\"}" or "{\"info\":\"update_password\",\"msg\":\"failed\"}";
+ */
+char *update_password_by_token(char *json) {
+    CommonJsonClient *common_json = common_json_client_from_string(json);
+    CommonJsonServer *common_json_server_response = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+    char temp_token[100];
+    char new_password[100];
+    strcpy(temp_token, common_json->parm1);
+    strcpy(new_password, common_json->parm2);
+
+    char *username_temp = check_token(temp_token);
+
+    if (change_password_in_json_file(USER_INFO_PATH, temp_token, new_password) == 0) {
+        // 获取新的token
+        char new_token[100];
+        sha256_string_with_salt(new_password, username_temp, new_token);
+        strcpy(common_json_server_response->info, "update_password");
+        strcpy(common_json_server_response->msg, new_token);
+    } else {
+        strcpy(common_json_server_response->info, "update_password");
+        strcpy(common_json_server_response->msg, "failed");
+    }
+
+    return common_json_server_to_string(common_json_server_response);
+}
+
+
+/*
+ * 删除用户
+ * 输入json: "{\"cmd\":\"delete_user\",\"parm1\":\"token\"}";
+ * 输出json: "{\"info\":\"delete_user\",\"msg\":\"success\"}" or "{\"info\":\"delete_user\",\"msg\":\"failed\"}";
+ */
+char *remove_user_by_token(char *json) {
+    CommonJsonClient *common_json = common_json_client_from_string(json);
+    CommonJsonServer *common_json_server_response = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+    char token[100];
+    strcpy(token, common_json->parm1);
+
+    if (remove_user_from_json_file(USER_INFO_PATH, token) == 0) {
+        strcpy(common_json_server_response->info, "delete_user");
+        strcpy(common_json_server_response->msg, "success");
+    } else {
+        strcpy(common_json_server_response->info, "delete_user");
+        strcpy(common_json_server_response->msg, "failed");
+    }
+
+    return common_json_server_to_string(common_json_server_response);
+}
+
+
 
 /*
  * 用户获取历史记录, 返回json

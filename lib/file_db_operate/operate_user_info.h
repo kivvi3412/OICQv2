@@ -131,6 +131,7 @@ int write_users_to_json_file(const char *filename, const UserInfoStruct *users, 
 
     return 0;
 }
+
 /*
  * 将用户信息添加到 json 文件
  * @param filename json文件名
@@ -162,6 +163,86 @@ int add_user_to_json_file(const char *filename, UserInfoStruct *user_info) {
     return 0;
 }
 
+/*
+ * 从 json 文件中删除用户信息
+ * @param filename json文件名
+ * @param token_temp 用户token
+ * @return 0成功删除, -1表示失败
+ */
+int remove_user_from_json_file(const char *filename, const char *token) {
+    UserInfoStruct users[MAX_USERS];
+    int num_users = read_users_from_json_file(filename, users, MAX_USERS);
+    if (num_users < 0) {
+        printf("Failed to read users from json file\n");
+        return -1;
+    }
+
+    int user_index = -1;
+    for (int i = 0; i < num_users; i++) {
+        if (strcmp(users[i].token, token) == 0) {
+            user_index = i;
+            break;
+        }
+    }
+
+    if (user_index == -1) {
+        printf("User not found\n");
+        return -1;
+    }
+
+    // Shift remaining users to fill the gap
+    for (int i = user_index; i < num_users - 1; i++) {
+        users[i] = users[i + 1];
+    }
+
+    if (write_users_to_json_file(filename, users, num_users - 1) < 0) {
+        printf("Failed to write users to json file\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+/*
+ * 修改 json 文件中的用户密码
+ * @param filename json文件名
+ * @param token 用户token
+ * @param new_password 新密码
+ * @return 0成功修改, -1表示失败
+ */
+int change_password_in_json_file(const char *filename, const char *token, const char *new_password) {
+    UserInfoStruct users[MAX_USERS];
+    int num_users = read_users_from_json_file(filename, users, MAX_USERS);
+    if (num_users < 0) {
+        printf("Failed to read users from json file\n");
+        return -1;
+    }
+
+    int user_index = -1;
+    for (int i = 0; i < num_users; i++) {
+        if (strcmp(users[i].token, token) == 0) {
+            user_index = i;
+            break;
+        }
+    }
+
+    if (user_index == -1) {
+        printf("User not found\n");
+        return -1;
+    }
+
+    strncpy(users[user_index].password, new_password, sizeof(users[user_index].password));
+    char temp_token[100];
+    sha256_string_with_salt(users[user_index].password, users[user_index].username, temp_token);
+    strcpy(users[user_index].token, temp_token);
+
+    if (write_users_to_json_file(filename, users, num_users) < 0) {
+        printf("Failed to write users to json file\n");
+        return -1;
+    }
+
+    return 0;
+}
 
 
 

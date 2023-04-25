@@ -34,7 +34,7 @@ void send_message() {
     while (fgets(buffer, BUFFER_SIZE_CLIENT, stdin)) {
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
 
-        char *json_string;
+        char *json_string = (char *) malloc(sizeof(char) * BUFFER_SIZE_CLIENT);
         if (strcmp(buffer, "/login") == 0) {
             // Login, input username and password, then send to the server
             char username[BUFFER_SIZE_CLIENT];
@@ -63,6 +63,26 @@ void send_message() {
             password[strcspn(password, "\n")] = '\0';
 
             json_string = register_user(username, password);
+        } else if (strcmp(buffer, "/update_password") == 0) {
+            char password[BUFFER_SIZE_CLIENT];
+
+            printf("Enter your new password: ");
+            fgets(password, BUFFER_SIZE_CLIENT, stdin);
+            password[strcspn(password, "\n")] = '\0';
+
+            json_string = update_password_user(token, password);
+        } else if (strcmp(buffer, "/delete") == 0) {
+            char delete[BUFFER_SIZE_CLIENT];
+
+            // 输入delete确认删除
+            printf("Enter delete to confirm: ");
+            fgets(delete, BUFFER_SIZE_CLIENT, stdin);
+            delete[strcspn(delete, "\n")] = '\0';
+            if (strcmp(delete, "delete") != 0) {
+                printf("Abort.\n");
+                continue;
+            }
+            json_string = delete_user(token);
         } else if (strcmp(buffer, "/history") == 0) {   // History
             json_string = get_history(token);
         } else if (strncmp(buffer, "/send ", 6) == 0) {

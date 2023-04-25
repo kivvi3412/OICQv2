@@ -67,7 +67,34 @@ void *server_response(char *input_json, client_info *client) {
         }
         send_general_server_text(register_from_json(input_json), client);   // 发送注册结果
         return NULL;
-    } else if (strcmp(cmd->valuestring, "get_history") == 0) {  // get_history
+    } else if (strcmp(cmd->valuestring, "update_password") == 0) {
+        cJSON *token_cjson = cJSON_GetObjectItem(json_obj, "parm1");
+        cJSON *new_password = cJSON_GetObjectItem(json_obj, "parm2");
+        if (!token_cjson || !new_password) {
+            printf("Failed to get token_cjson or new_password\n");
+            CommonJsonServer *temp_message = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+            strcpy(temp_message->info, "update_password");
+            strcpy(temp_message->msg, "failed");
+            send_general_server_json(temp_message, client);
+            free(temp_message);
+            return NULL;
+        }
+        send_general_server_text(update_password_by_token(input_json), client);   // 发送更新密码结果
+        return NULL;
+    } else if (strcmp(cmd->valuestring, "delete_user") == 0) {
+        cJSON *token_cjson = cJSON_GetObjectItem(json_obj, "parm1");
+        if (!token_cjson) {
+            printf("Failed to get token_cjson\n");
+            CommonJsonServer *temp_message = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+            strcpy(temp_message->info, "delete_user");
+            strcpy(temp_message->msg, "failed");
+            send_general_server_json(temp_message, client);
+            free(temp_message);
+            return NULL;
+        }
+        send_general_server_text(remove_user_by_token(input_json), client);   // 发送删除用户结果
+        return NULL;
+    }else if (strcmp(cmd->valuestring, "get_history") == 0) {  // get_history
         cJSON *token_cjson = cJSON_GetObjectItem(json_obj, "parm1");
         // 校验token是否正确
         if (check_token(token_cjson->valuestring) == NULL) {

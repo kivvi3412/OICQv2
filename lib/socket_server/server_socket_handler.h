@@ -29,7 +29,6 @@ void *handle_client(void *arg) {
     pthread_mutex_lock(&mutex);  // 加锁，保护 clients 变量
     for (int i = 0; i < MAX_CLIENTS; i++) { // 将断开连接的客户端从 clients 中移除
         if (clients[i] != NULL && clients[i]->socket_fd == client->socket_fd) {
-            printf("Deleted client: %d\n", client->socket_fd);
             clients[i] = NULL;
             client_count--;
             break;

@@ -11,13 +11,13 @@
 #include "shared_memory_dir/shared_memory.h"
 
 // 以下是获得服务器反馈后调用的函数
-// 登录注册失败通用函数
-void login_register_failed(char *info) {
+// 失败通用函数
+void general_message_failed(char *info) {
     printf("%s\n", info);
 }
 
-// 登录成功通用函数
-void login_register_success(char *info) {
+// 成功通用函数
+void general_message_success(char *info) {
     printf("%s\n", info);
 }
 
@@ -66,6 +66,24 @@ char *login_user(char *username, char *password) {
     cJSON_AddStringToObject(json_obj, "parm2", password);
     return cJSON_PrintUnformatted(json_obj);
 }
+
+// 更新密码函数，输入token和新密码
+char *update_password_user(char *token_func, char *new_password) {
+    cJSON *json_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_obj, "cmd", "update_password");
+    cJSON_AddStringToObject(json_obj, "parm1", token_func);
+    cJSON_AddStringToObject(json_obj, "parm2", new_password);
+    return cJSON_PrintUnformatted(json_obj);
+}
+
+// 删除账户函数，输入token
+char *delete_user(char *token_func) {
+    cJSON *json_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_obj, "cmd", "delete_user");
+    cJSON_AddStringToObject(json_obj, "parm1", token_func);
+    return cJSON_PrintUnformatted(json_obj);
+}
+
 
 // 获取历史记录函数，输入token
 char *get_history(char *token_temp) {
