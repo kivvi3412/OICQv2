@@ -2,6 +2,10 @@
 // Created by HAIRONG ZHU on 2023/4/24.
 //
 
+/*
+ * 一些基本的结构体定义，宏定义等等
+ */
+
 #ifndef OICQV2_BASIC_DEFINITION_H
 #define OICQV2_BASIC_DEFINITION_H
 

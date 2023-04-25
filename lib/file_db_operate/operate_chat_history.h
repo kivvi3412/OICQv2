@@ -1,6 +1,9 @@
 //
 // Created by HAIRONG ZHU on 2023/4/24.
 //
+/*
+ * 此文件用于操作聊天记录
+ */
 
 #ifndef OICQV2_OPERATE_CHAT_HISTORY_H
 #define OICQV2_OPERATE_CHAT_HISTORY_H

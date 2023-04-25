@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
-#include "socket_client/auto_client_transfer.h"
-#include "socket_client/client_socket_sender.h"
+#include "socket_client/client_response_main_function.h"
+#include "socket_client/client_sender_receiver_function.h"
 
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 8888

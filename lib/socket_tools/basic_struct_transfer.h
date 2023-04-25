@@ -1,6 +1,9 @@
 //
 // Created by HAIRONG ZHU on 2023/4/24.
 //
+/*
+ * 此代码用于结构体和 JSON 字符串之间的转换
+ */
 
 #ifndef OICQV2_BASIC_STRUCT_TRANSFER_H
 #define OICQV2_BASIC_STRUCT_TRANSFER_H

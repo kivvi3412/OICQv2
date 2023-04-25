@@ -25,17 +25,19 @@ endfunction()
 
 # 创建可执行文件
 add_executable(server src/server.c lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h)
-add_executable(client src/client.c lib/file_db_operate/operate_user_info.h lib/basic_info/basic_definition.h lib/file_db_operate/operate_chat_history.h lib/socket_tools/basic_struct_transfer.h lib/common_tools/common_tools.h lib/socket_tools/struct_json_transfer.h lib/socket_server/auto_server_transfer.h lib/socket_client/auto_client_transfer.h lib/socket_server/server_socket_handler.h lib/socket_client/client_socket_sender.h lib/socket_server/server_socket_sender.h lib/socket_server/server_socket_single_broadcast.h lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h)
-add_executable(test src/test.c)
+add_executable(client src/client.c lib/file_db_operate/operate_user_info.h lib/basic_info/basic_definition.h lib/file_db_operate/operate_chat_history.h lib/socket_tools/basic_struct_transfer.h lib/common_tools/common_tools.h lib/socket_tools/server_json_response.h lib/socket_server/server_response_main_function.h lib/socket_client/client_response_main_function.h lib/socket_server/server_socket_handler.h lib/socket_client/client_sender_receiver_function.h lib/socket_server/server_basic_socket_sender.h lib/socket_server/server_sender_function.h lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h)
 
 # 链接cjson库到各个可执行文件
 link_cjson_library(server)
 link_cjson_library(client)
-link_cjson_library(test)
 
 # 自动查找openssl
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 target_link_libraries(server ${OPENSSL_LIBRARIES})
 target_link_libraries(client ${OPENSSL_LIBRARIES})
-target_link_libraries(test ${OPENSSL_LIBRARIES})
+
+# 测试程序
+#add_executable(test src/test.c)
+#link_cjson_library(test)
+#target_link_libraries(test ${OPENSSL_LIBRARIES})

@@ -2,17 +2,17 @@
 // Created by HAIRONG ZHU on 2023/4/24.
 //
 
-#ifndef OICQV2_AUTO_SERVER_TRANSFER_H
-#define OICQV2_AUTO_SERVER_TRANSFER_H
+#ifndef OICQV2_SERVER_RESPONSE_MAIN_FUNCTION_H
+#define OICQV2_SERVER_RESPONSE_MAIN_FUNCTION_H
 
 #include <string.h>
 #include "stdio.h"
 #include "stdlib.h"
 #include "cJSON/cJSON.h"
-#include "socket_tools/struct_json_transfer.h"
+#include "socket_tools/server_json_response.h"
 #include "socket_server/server_socket_handler.h"
-#include "socket_server/server_socket_sender.h"
-#include "server_socket_single_broadcast.h"
+#include "socket_server/server_basic_socket_sender.h"
+#include "server_sender_function.h"
 #include "shared_memory_dir/shared_memory.h"
 
 /*
@@ -148,4 +148,4 @@ void *server_response(char *input_json, client_info *client) {
 }
 
 
-#endif //OICQV2_AUTO_SERVER_TRANSFER_H
+#endif //OICQV2_SERVER_RESPONSE_MAIN_FUNCTION_H

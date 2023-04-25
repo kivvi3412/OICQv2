@@ -6,7 +6,7 @@
 #define OICQV2_SERVER_SOCKET_HANDLER_H
 #include <string.h>
 #include <unistd.h>
-#include "auto_server_transfer.h"
+#include "server_response_main_function.h"
 
 // 处理客户端请求的线程函数
 void *handle_client(void *arg) {

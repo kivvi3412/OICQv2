@@ -1,5 +1,8 @@
 #include <openssl/sha.h>
 
+/*
+ * 加密函数, 用于生成token
+ */
 
 void sha256_string_with_salt(const char *str, const char *salt, char output[SHA256_DIGEST_LENGTH * 2 + 1]) {
     char salted_str[256];

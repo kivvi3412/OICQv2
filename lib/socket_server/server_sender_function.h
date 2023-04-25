@@ -2,8 +2,8 @@
 // Created by HAIRONG ZHU on 2023/4/24.
 //
 
-#ifndef OICQV2_SERVER_SOCKET_SINGLE_BROADCAST_H
-#define OICQV2_SERVER_SOCKET_SINGLE_BROADCAST_H
+#ifndef OICQV2_SERVER_SENDER_FUNCTION_H
+#define OICQV2_SERVER_SENDER_FUNCTION_H
 
 #include <pthread.h>
 #include <string.h>
@@ -33,4 +33,4 @@ void send_message_func(char *message, int receiver_socket_fd) {   // 给某人�
     pthread_mutex_unlock(&mutex);  // 解锁
 }
 
-#endif //OICQV2_SERVER_SOCKET_SINGLE_BROADCAST_H
+#endif //OICQV2_SERVER_SENDER_FUNCTION_H

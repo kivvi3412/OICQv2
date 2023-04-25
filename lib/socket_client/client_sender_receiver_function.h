@@ -2,12 +2,16 @@
 // Created by HAIRONG ZHU on 2023/4/24.
 //
 
-#ifndef OICQV2_CLIENT_SOCKET_SENDER_H
-#define OICQV2_CLIENT_SOCKET_SENDER_H
+/*
+ * 本文件是客户端的发送和接收函数
+ */
+
+#ifndef OICQV2_CLIENT_SENDER_RECEIVER_FUNCTION_H
+#define OICQV2_CLIENT_SENDER_RECEIVER_FUNCTION_H
 
 
 #include "stdio.h"
-#include "socket_client/auto_client_transfer.h"
+#include "socket_client/client_response_main_function.h"
 #include "shared_memory_dir/shared_memory.h"
 
 // 以下是获得服务器反馈后调用的函数
@@ -103,4 +107,4 @@ char *send_message_client(char *token_temp, char *message) {
 }
 
 
-#endif //OICQV2_CLIENT_SOCKET_SENDER_H
+#endif //OICQV2_CLIENT_SENDER_RECEIVER_FUNCTION_H

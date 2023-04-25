@@ -1,6 +1,9 @@
 //
 // Created by HAIRONG ZHU on 2023/4/24.
 //
+/*
+ * 此文件用于对用户信息的操作
+ */
 
 #ifndef OICQV2_OPERATE_USER_INFO_H
 #define OICQV2_OPERATE_USER_INFO_H

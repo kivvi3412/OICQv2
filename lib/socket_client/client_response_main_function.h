@@ -1,16 +1,19 @@
 //
 // Created by HAIRONG ZHU on 2023/4/24.
 //
+/*
+ * 对从服务器收到的应答进行分情况处理，调用前端对应的函数，比如显示消息的函数和发送消息的函数
+ */
 
-#ifndef OICQV2_AUTO_CLIENT_TRANSFER_H
-#define OICQV2_AUTO_CLIENT_TRANSFER_H
+#ifndef OICQV2_CLIENT_RESPONSE_MAIN_FUNCTION_H
+#define OICQV2_CLIENT_RESPONSE_MAIN_FUNCTION_H
 
 #include <string.h>
 #include "stdio.h"
 #include "stdlib.h"
 #include "cJSON/cJSON.h"
-#include "socket_tools/struct_json_transfer.h"
-#include "socket_client/client_socket_sender.h"
+#include "socket_tools/server_json_response.h"
+#include "socket_client/client_sender_receiver_function.h"
 
 /*
  * 此函数用于检测服务器的消息，首先检查消息是否为 JSON 格式，然后检查 JSON 格式是否符合规范
@@ -91,4 +94,4 @@ void client_response(char *input_json) {
     }
 }
 
-#endif //OICQV2_AUTO_CLIENT_TRANSFER_H
+#endif //OICQV2_CLIENT_RESPONSE_MAIN_FUNCTION_H

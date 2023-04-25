@@ -1,9 +1,12 @@
 //
 // Created by HAIRONG ZHU on 2023/4/24.
 //
+/*
+ * 此代码用于处理客户端发送的json数据， json输入json输出
+ */
 
-#ifndef OICQV2_STRUCT_JSON_TRANSFER_H
-#define OICQV2_STRUCT_JSON_TRANSFER_H
+#ifndef OICQV2_SERVER_JSON_RESPONSE_H
+#define OICQV2_SERVER_JSON_RESPONSE_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -339,4 +342,4 @@ SimpleMessageStruct *get_message_from_json_string(char *json) {
 }
 
 
-#endif //OICQV2_STRUCT_JSON_TRANSFER_H
+#endif //OICQV2_SERVER_JSON_RESPONSE_H
