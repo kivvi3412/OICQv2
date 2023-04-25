@@ -19,28 +19,28 @@
  * @return: 发送给服务器的信息
  */
 
-char *client_response(char *input_json) {
+void client_response(char *input_json) {
     if (!input_json) {
         printf("Invalid input input_json\n");
-        return NULL;
+        return;
     }
 
     cJSON *json_obj = cJSON_Parse(input_json);
     if (!json_obj) {
         printf("Failed to parse JSON: %s\n", cJSON_GetErrorPtr());
-        return NULL;
+        return;
     }
 
     cJSON *info = cJSON_GetObjectItem(json_obj, "info");
     if (!info) {
         printf("Failed to get info\n");
-        return NULL;
+        return;
     }
 
     cJSON *msg = cJSON_GetObjectItem(json_obj, "msg");
     if (!msg) {
         printf("Failed to get msg\n");
-        return NULL;
+        return;
     }
 
     if (strcmp(info->valuestring, "login") == 0) {   // login
@@ -73,7 +73,7 @@ char *client_response(char *input_json) {
         show_message(message);  // 调用显示单条新消息的函数
     } else {
         printf("Invalid info\n");
-        return NULL;
+        return;
     }
 }
 

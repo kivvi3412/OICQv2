@@ -61,7 +61,14 @@ void server() {
         client->address = client_address;
         pthread_mutex_lock(&mutex);  // 加锁，保护 client_count 变量
         if (client_count < MAX_CLIENTS) {
-            clients[client_count++] = client;
+            //  clients[client_count++] = client;     // 这么写可能会导致覆盖, 因为别的地方还有client_count--
+            for (int i = 0; i < MAX_CLIENTS; i++) { // 循环检测是否有空位
+                if (clients[i] == NULL) {
+                    clients[i] = client;
+                    client_count++;
+                    break;
+                }
+            }
         } else {
             perror("max clients reached");
             close(new_socket_fd);

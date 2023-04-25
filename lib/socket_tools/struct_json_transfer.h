@@ -22,16 +22,16 @@
 char *check_token(char *token) {
     UserInfoStruct *user_info = (UserInfoStruct *) malloc(sizeof(UserInfoStruct) * MAX_USERS);
     // 从文件中读取用户信息
+    char *username = NULL;
     if (read_users_from_json_file(USER_INFO_PATH, user_info, MAX_USERS) != -1) {
-        char *username = NULL;
         // 验证用户名和密码
         for (int i = 0; i < MAX_USERS; i++) {
-            if (strcmp(user_info[i].token, token) == 0) {
+            if (strcmp(user_info[i].token, token) == 0 && strcmp(token, "") != 0) { // 这个地方一定要注意token有可能是空字符串
                 username = strdup(user_info[i].username);
-                break;
+                free(user_info);
+                return username;
             }
         }
-        free(user_info);
         return username;
     } else {
         free(user_info);
@@ -48,10 +48,10 @@ char *register_from_json(char *json) {
     CommonJsonClient *common_json = common_json_client_from_string(json);
     UserInfoStruct *user_info = (UserInfoStruct *) malloc(sizeof(UserInfoStruct));
     CommonJsonServer *common_json_server_response = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
-    char token[33];
+    char token[100];
     strcpy(user_info->username, common_json->parm1);
     strcpy(user_info->password, common_json->parm2);
-    md5_string_with_salt(user_info->password, user_info->username, token);
+    sha256_string_with_salt(user_info->password, user_info->username, token);
     strcpy(user_info->token, token);
     if (add_user_to_json_file(USER_INFO_PATH, user_info) == 0) {
         strcpy(common_json_server_response->info, "register");

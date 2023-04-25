@@ -14,7 +14,7 @@
 
 int socket_fd;
 
-void recv_message() {
+void recv_message() {   // Receive message from server
     char buffer[BUFFER_SIZE_CLIENT];
     while (1) {
         memset(buffer, 0, sizeof(buffer));
@@ -23,7 +23,6 @@ void recv_message() {
             printf("Server closed.\n");
             break;
         }
-        //  printf("Recv: %s\n", buffer);
         client_response(buffer);
     }
 }
@@ -36,11 +35,7 @@ void send_message() {
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
 
         char *json_string;
-
-        if (strcmp(buffer, "/exit") == 0) { // Exit
-            printf("Exiting...\n");
-            break;
-        } else if (strcmp(buffer, "/login") == 0) {
+        if (strcmp(buffer, "/login") == 0) {
             // Login, input username and password, then send to the server
             char username[BUFFER_SIZE_CLIENT];
             char password[BUFFER_SIZE_CLIENT];
@@ -70,7 +65,6 @@ void send_message() {
             json_string = register_user(username, password);
         } else if (strcmp(buffer, "/history") == 0) {   // History
             json_string = get_history(token);
-            printf("%s\n", json_string);
         } else if (strncmp(buffer, "/send ", 6) == 0) {
             char *message = buffer + 6;
             json_string = send_message_client(token, message);
@@ -108,7 +102,6 @@ void client() {
         exit(0);
     } else { // 父进程
         send_message();
-
         // 等待子进程结束
         int status;
         waitpid(pid, &status, 0);

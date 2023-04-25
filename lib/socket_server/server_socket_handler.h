@@ -25,6 +25,23 @@ void *handle_client(void *arg) {
         // 处理客户端请求
         server_response(buffer, client);
     }
+    // 添加断开连接释放代码
+    pthread_mutex_lock(&mutex);  // 加锁，保护 clients 变量
+    for (int i = 0; i < MAX_CLIENTS; i++) { // 将断开连接的客户端从 clients 中移除
+        if (clients[i] != NULL && clients[i]->socket_fd == client->socket_fd) {
+            printf("Deleted client: %d\n", client->socket_fd);
+            clients[i] = NULL;
+            client_count--;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&mutex);  // 解锁
+    printf("client number: %d\n", client_count);
+    printf("Client disconnected: %s:%d\n",
+           inet_ntoa(client->address.sin_addr), ntohs(client->address.sin_port));
+    close(client->socket_fd);   // 关闭客户端socket
+    free(client);    // 释放 client_info 结构体内存
+    return NULL;
 }
 
 #endif //OICQV2_SERVER_SOCKET_HANDLER_H

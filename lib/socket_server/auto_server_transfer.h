@@ -69,8 +69,14 @@ void *server_response(char *input_json, client_info *client) {
         return NULL;
     } else if (strcmp(cmd->valuestring, "get_history") == 0) {  // get_history
         cJSON *token_cjson = cJSON_GetObjectItem(json_obj, "parm1");
-        if (!token_cjson) {
-            printf("Failed to get token\n");
+        // 校验token是否正确
+        if (check_token(token_cjson->valuestring) == NULL) {
+            printf("Invalid token\n");
+            CommonJsonServer *temp_message = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+            strcpy(temp_message->info, "login");
+            strcpy(temp_message->msg, "failed");
+            send_general_server_json(temp_message, client);
+            free(temp_message);
             return NULL;
         }
         send_general_server_text(get_history_from_json(input_json), client);    // 发送聊天记录
@@ -78,8 +84,14 @@ void *server_response(char *input_json, client_info *client) {
     } else if (strcmp(cmd->valuestring, "send_message") == 0) { // send_message
         cJSON *token_cjson = cJSON_GetObjectItem(json_obj, "parm1");
         cJSON *message = cJSON_GetObjectItem(json_obj, "parm2");
-        if (!token_cjson || !message) {
-            printf("Failed to get token or message\n");
+        // 校验token是否正确
+        if (check_token(token_cjson->valuestring) == NULL) {
+            printf("Invalid token\n");
+            CommonJsonServer *temp_message = (CommonJsonServer *) malloc(sizeof(CommonJsonServer));
+            strcpy(temp_message->info, "login");
+            strcpy(temp_message->msg, "failed");
+            send_general_server_json(temp_message, client);
+            free(temp_message);
             return NULL;
         }
         // 添加消息到数据库

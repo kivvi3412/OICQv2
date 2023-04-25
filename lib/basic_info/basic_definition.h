@@ -30,7 +30,7 @@ typedef struct client_info {
 typedef struct {
     char username[20];
     char password[20];
-    char token[50];
+    char token[100];
 } UserInfoStruct;
 
 // 历史聊天记录存储结构, 单一聊天记录结构

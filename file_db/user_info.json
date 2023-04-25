@@ -2,11 +2,16 @@
     {
         "username": "kivvi",
         "password": "3412",
-        "token": "1dd238686efdc47802af65404cc75c9b"
+        "token": "a9df10c94eea642c5de37bdb32a12c53a39150a96703a95f4fc9dd8e792fd2ed"
     },
     {
         "username": "admin",
         "password": "3412",
-        "token": "74400aa36f54ce98b8ac28d7dec29106"
+        "token": "1fe345fa6ea30a051b90f90e7da771845bbbb85fbb50739e96a20a3d6a24fc75"
+    },
+    {
+        "username": "test",
+        "password": "test",
+        "token": "37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578"
     }
 ]
