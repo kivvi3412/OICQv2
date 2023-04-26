@@ -14,6 +14,7 @@
 #include "cJSON/cJSON.h"
 #include "socket_tools/server_json_response.h"
 #include "socket_client/client_sender_receiver_function.h"
+#include "socket_client/display_function.h"
 
 /*
  * 此函数用于检测服务器的消息，首先检查消息是否为 JSON 格式，然后检查 JSON 格式是否符合规范
@@ -24,25 +25,25 @@
 
 void client_response(char *input_json) {
     if (!input_json) {
-        printf("Invalid input input_json\n");
+        invalid_input_the_input_json_menu();
         return;
     }
 
     cJSON *json_obj = cJSON_Parse(input_json);
     if (!json_obj) {
-        printf("Failed to parse JSON: %s\n", cJSON_GetErrorPtr());
+        failed_to_parse_JSON_menu(cJSON_GetErrorPtr());
         return;
     }
 
     cJSON *info = cJSON_GetObjectItem(json_obj, "info");
     if (!info) {
-        printf("Failed to get info\n");
+        failed_to_get_info_menu();
         return;
     }
 
     cJSON *msg = cJSON_GetObjectItem(json_obj, "msg");
     if (!msg) {
-        printf("Failed to get msg\n");
+        failed_to_get_msg_menu();
         return;
     }
 
@@ -89,7 +90,7 @@ void client_response(char *input_json) {
             general_message_success("delete success");
         }
     } else {
-        printf("Invalid info\n");
+        invalid_command();
         return;
     }
 }

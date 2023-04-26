@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include "socket_client/client_response_main_function.h"
 #include "socket_client/client_sender_receiver_function.h"
+#include "socket_client/display_function.h"
 
 #define SERVER_ADDRESS "127.0.0.1"
 #define SERVER_PORT 8888
@@ -20,7 +21,7 @@ void recv_message() {   // Receive message from server
         memset(buffer, 0, sizeof(buffer));
         ssize_t n = recv(socket_fd, buffer, sizeof(buffer), 0);
         if (n <= 0) {
-            printf("Server closed.\n");
+            server_closed_menu();
             break;
         }
         client_response(buffer);
@@ -29,7 +30,7 @@ void recv_message() {   // Receive message from server
 
 void send_message() {
     char buffer[BUFFER_SIZE_CLIENT];
-    printf("Enter a command: ");
+    input_commend_menu();
 
     while (fgets(buffer, BUFFER_SIZE_CLIENT, stdin)) {
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
@@ -40,11 +41,11 @@ void send_message() {
             char username[BUFFER_SIZE_CLIENT];
             char password[BUFFER_SIZE_CLIENT];
 
-            printf("Enter your username: ");
+            name_input_menu();
             fgets(username, BUFFER_SIZE_CLIENT, stdin);
             username[strcspn(username, "\n")] = '\0';
 
-            printf("Enter your password: ");
+            password_input_menu();
             fgets(password, BUFFER_SIZE_CLIENT, stdin);
             password[strcspn(password, "\n")] = '\0';
 
@@ -54,11 +55,11 @@ void send_message() {
             char username[BUFFER_SIZE_CLIENT];
             char password[BUFFER_SIZE_CLIENT];
 
-            printf("Enter your username: ");
+            name_input_menu();
             fgets(username, BUFFER_SIZE_CLIENT, stdin);
             username[strcspn(username, "\n")] = '\0';
 
-            printf("Enter your password: ");
+            password_input_menu();
             fgets(password, BUFFER_SIZE_CLIENT, stdin);
             password[strcspn(password, "\n")] = '\0';
 
@@ -66,7 +67,7 @@ void send_message() {
         } else if (strcmp(buffer, "/update_password") == 0) {
             char password[BUFFER_SIZE_CLIENT];
 
-            printf("Enter your new password: ");
+            new_password_input_menu();
             fgets(password, BUFFER_SIZE_CLIENT, stdin);
             password[strcspn(password, "\n")] = '\0';
 
@@ -75,11 +76,11 @@ void send_message() {
             char delete[BUFFER_SIZE_CLIENT];
 
             // 输入delete确认删除
-            printf("Enter delete to confirm: ");
+            confirm_delete_menu();
             fgets(delete, BUFFER_SIZE_CLIENT, stdin);
             delete[strcspn(delete, "\n")] = '\0';
             if (strcmp(delete, "delete") != 0) {
-                printf("Abort.\n");
+                abort_menu();
                 continue;
             }
             json_string = delete_user(token);
@@ -89,7 +90,7 @@ void send_message() {
             char *message = buffer + 6;
             json_string = send_message_client(token, message);
         } else {
-            printf("Invalid command. Please try again.\n");
+            invalid_command();
             continue;
         }
 

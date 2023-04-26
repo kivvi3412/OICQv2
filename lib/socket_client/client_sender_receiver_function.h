@@ -13,26 +13,28 @@
 #include "stdio.h"
 #include "socket_client/client_response_main_function.h"
 #include "shared_memory_dir/shared_memory.h"
+#include "socket_client/display_function.h"
 
 // 以下是获得服务器反馈后调用的函数
 // 失败通用函数
 void general_message_failed(char *info) {
-    printf("%s\n", info);
+    general_message_failed_menu(info);
 }
 
 // 成功通用函数
 void general_message_success(char *info) {
-    printf("%s\n", info);
+    general_message_success_menu(info);
 }
 
 // 消息发送失败通用函数
 void send_message_failed(char *info) {
-    printf("%s\n", info);
+    send_message_failed_menu(info);
 }
 
 // 消息发送成功函数
 void send_message_success() {
-    printf("Send message success\n");
+//    send_message_success_menu();
+    printf("");
 }
 
 // 保存token
@@ -42,14 +44,12 @@ void save_token(char *input_token) {
 
 // 显示历史记录
 void show_history_messages(SimpleMessageStruct *history_messages, int count) {
-    for (int i = 0; i < count; i++) {
-        printf("%s: %s\n", history_messages[i].username, history_messages[i].message);
-    }
+    show_history_messages_menu(history_messages, count);
 }
 
 // 显示单条消息
 void show_message(SimpleMessageStruct *message) {
-    printf("%s: %s\n", message->username, message->message);
+    show_message_menu(message);
 }
 
 // 以下是发送请求给服务器的函数

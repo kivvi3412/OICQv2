@@ -25,7 +25,7 @@ endfunction()
 
 # 创建可执行文件
 add_executable(server src/server.c lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h)
-add_executable(client src/client.c lib/file_db_operate/operate_user_info.h lib/basic_info/basic_definition.h lib/file_db_operate/operate_chat_history.h lib/socket_tools/basic_struct_transfer.h lib/common_tools/common_tools.h lib/socket_tools/server_json_response.h lib/socket_server/server_response_main_function.h lib/socket_client/client_response_main_function.h lib/socket_server/server_socket_handler.h lib/socket_client/client_sender_receiver_function.h lib/socket_server/server_basic_socket_sender.h lib/socket_server/server_sender_function.h lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h)
+add_executable(client src/client.c lib/file_db_operate/operate_user_info.h lib/basic_info/basic_definition.h lib/file_db_operate/operate_chat_history.h lib/socket_tools/basic_struct_transfer.h lib/common_tools/common_tools.h lib/socket_tools/server_json_response.h lib/socket_server/server_response_main_function.h lib/socket_client/client_response_main_function.h lib/socket_server/server_socket_handler.h lib/socket_client/client_sender_receiver_function.h lib/socket_server/server_basic_socket_sender.h lib/socket_server/server_sender_function.h lib/shared_memory_dir/shared_memory.c lib/shared_memory_dir/shared_memory.h lib/socket_client/display_function.h)
 
 # 链接cjson库到各个可执行文件
 link_cjson_library(server)
