@@ -46,6 +46,9 @@ void server() {
         exit(EXIT_FAILURE);
     }
 
+    printf("Server started at 0.0.0.0\n");
+    printf("Listening on port %d...\n", PORT);
+
     // 循环监听客户端请求
     while (true) {
         // 接受客户端连接，阻塞等待
