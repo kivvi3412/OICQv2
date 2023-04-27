@@ -16,34 +16,34 @@
 int socket_fd;
 
 void recv_message() {   // Receive message from server
-    char buffer[BUFFER_SIZE_CLIENT];
-    while (1) {
-        memset(buffer, 0, sizeof(buffer));
-        ssize_t n = recv(socket_fd, buffer, sizeof(buffer), 0);
-        if (n <= 0) {
-            server_closed_menu();
-            break;
+    char buffer[BUFFER_SIZE_CLIENT];    // 创建缓冲区
+    while (1) { // 循环监听客户端请求
+        memset(buffer, 0, sizeof(buffer));  // 清空缓冲区
+        ssize_t n = recv(socket_fd, buffer, sizeof(buffer), 0); // 接收客户端消息
+        if (n <= 0) {   // 接收出错
+            server_closed_menu();   // 提示服务器关闭
+            break;  //  跳出循环
         }
-        client_response(buffer);
+        client_response(buffer);    // 处理客户端消息
     }
 }
 
-void send_message() {
-    char buffer[BUFFER_SIZE_CLIENT];
-    input_commend_menu();
+void send_message() {   // Send message to server
+    char buffer[BUFFER_SIZE_CLIENT];    // 创建缓冲区
+    input_commend_menu();   // 提示输入命令
 
-    while (fgets(buffer, BUFFER_SIZE_CLIENT, stdin)) {
+    while (fgets(buffer, BUFFER_SIZE_CLIENT, stdin)) {  // 从标准输入读取命令
         buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
 
         char *json_string = (char *) malloc(sizeof(char) * BUFFER_SIZE_CLIENT);
-        if (strcmp(buffer, "/login") == 0) {
+        if (strcmp(buffer, "/login") == 0) {    // Login, input username and password, then send to the server
             // Login, input username and password, then send to the server
-            char username[BUFFER_SIZE_CLIENT];
+            char username[BUFFER_SIZE_CLIENT];  // 创建缓冲区
             char password[BUFFER_SIZE_CLIENT];
 
-            name_input_menu();
-            fgets(username, BUFFER_SIZE_CLIENT, stdin);
-            username[strcspn(username, "\n")] = '\0';
+            name_input_menu();  // 提示输入用户名
+            fgets(username, BUFFER_SIZE_CLIENT, stdin); // 从标准输入读取用户名
+            username[strcspn(username, "\n")] = '\0';   //  去除换行符
 
             password_input_menu();
             fgets(password, BUFFER_SIZE_CLIENT, stdin);
@@ -90,26 +90,26 @@ void send_message() {
             char *message = buffer + 6;
             json_string = send_message_client(token, message);
         } else {
-            invalid_command();
+            invalid_command();  // 提示无效命令
             continue;
         }
 
-        send(socket_fd, json_string, strlen(json_string), 0);
-        free(json_string);
+        send(socket_fd, json_string, strlen(json_string), 0);   //  发送消息
+        free(json_string);  // 释放内存
     }
 }
 
 
 void client() {
-    struct sockaddr_in server_address;
+    struct sockaddr_in server_address;  // 创建服务器地址
 
-    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    memset(&server_address, 0, sizeof(server_address));
-    server_address.sin_family = AF_INET;
-    server_address.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
-    server_address.sin_port = htons(SERVER_PORT);
+    socket_fd = socket(AF_INET, SOCK_STREAM, 0);    // 创建套接字
+    memset(&server_address, 0, sizeof(server_address)); //  清空服务器地址
+    server_address.sin_family = AF_INET;    // 设置地址族
+    server_address.sin_addr.s_addr = inet_addr(SERVER_ADDRESS); // 设置IP地址
+    server_address.sin_port = htons(SERVER_PORT);   // 设置端口号
 
-    if (connect(socket_fd, (struct sockaddr *) &server_address, sizeof(server_address)) == -1) {
+    if (connect(socket_fd, (struct sockaddr *) &server_address, sizeof(server_address)) == -1) {    // 连接服务器
         printf("Connection failed.\n");
         exit(1);
     }
@@ -130,6 +130,6 @@ void client() {
 }
 
 int main(void) {
-    init_shared_memory();
-    client();
+    init_shared_memory();   // 初始化共享内存
+    client();   // 启动客户端
 }
